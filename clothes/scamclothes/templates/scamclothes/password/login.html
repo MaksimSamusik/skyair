@@ -1,0 +1,26 @@
+{% extends 'scamclothes/password/base_password.html' %}
+{% load socialaccount %}
+{% load static %}
+{% block content %}
+        <h2>Вход</h2>
+        <form action="" method="post">
+
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form.as_p }}
+            </div>
+            <button type="submit" class="btn login-btn">Войти</button>
+
+
+        </form>
+        <p>Вы можете войти через:</p>
+        <div class="google-btn">
+            <a href="{% provider_login_url 'google' %}" class="google-login">
+              <img src="{% static 'scamclothes/images/google.jpg' %}" alt="Google Logo" class="google-icon" style="width: 50px; height: 50px; border: 2px solid black; border-radius: 30%">
+            </a>
+        </div>
+        <div class="extra-options">
+            <p>Нет аккаунта? <a href="{% url 'register' %}">Зарегистрируйтесь</a></p>
+            <p><a href="{% url 'password_reset' %}">Забыли пароль?</a></p>
+        </div>
+{% endblock %}

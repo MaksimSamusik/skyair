@@ -1,0 +1,76 @@
+{% extends 'scamclothes/pages/header.html' %}
+{% load static %}
+{% block content %}
+<div class="profile-container">
+    <!-- Личная информация пользователя -->
+    <div class="profile-header">
+        <div class="profile-picture">
+            <img src="{% if user.profile.profile_picture %}{{ user.profile.profile_picture.url }}{% else %}{% static 'scamclothes/images/user_default.png' %}{% endif %}" alt="Профиль" />
+        </div>
+        <div class="profile-info">
+            <h1>{{ user.username }}</h1>
+            <p>{{ user.email }}</p>
+            <button class="edit-btn" id="editProfileBtn">Редактировать профиль</button>
+        </div>
+    </div>
+
+    <!-- Список бронирований пользователя -->
+    <div class="bookings-section">
+        <h2>Ваши бронирования</h2>
+        <div class="bookings-list">
+            {% for booking in bookings %}
+            <div class="booking-card">
+                <h3>{{ booking.flight_name }}</h3>
+                <p>Отправление: {{ booking.departure_date }}</p>
+                <p>Прибытие: {{ booking.arrival_date }}</p>
+                <a href="{{ booking.get_absolute_url }}" class="view-btn">Подробнее</a>
+            </div>
+            {% empty %}
+            <p>У вас пока нет бронирований.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно для редактирования профиля -->
+<div id="editProfileModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2>Редактировать профиль</h2>
+        <form method="POST" enctype="multipart/form-data" id="EditProfileForm" action="{% url 'profile' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ user_form.username }}
+            </div>
+            <div class="form-group">
+                {{ profile_form.profile_picture }}
+            </div>
+            <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Открытие модального окна
+var modal = document.getElementById("editProfileModal");
+var btn = document.getElementById("editProfileBtn");
+var span = document.getElementsByClassName("close-btn")[0];
+
+btn.onclick = function() {
+    modal.style.display = "block";
+}
+
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+</script>
+{% endblock %}

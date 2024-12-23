@@ -1,0 +1,31 @@
+{% extends 'scamclothes/pages/header.html'%}
+{% load static %}
+{% block content %}
+<title>{{ title }}</title>
+    <!-- Секция с постами -->
+    <section class="posts-container">
+        {% if posts %}
+        {% for p in posts %}
+        <div class="post-card">
+            {% if p.photo %}
+            <img src="{{ p.photo.url }}" alt="Post Image">
+            {% endif %}
+            <div class="post-content">
+                <h2>{{ p.flight }}</h2>
+                <p>Отправление: {{ p.departure_date }}</p>
+                <p>Прибытие: {{ p.arrival_date }}</p>
+                <div class="post-actions">
+                    <a href="{{ p.get_absolute_url }}">Читать дальше</a>
+                    <form action="{% url 'add_to_bucket' p.id%}" method="post">
+                      {% csrf_token %}
+                      <button type="submit" class="bucket-btn"><i class="fa-solid fa-cart-shopping" style="width:50px; color: black;"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p>Рейсов не найдено.</p>
+        {% endif %}
+    </section>
+{% endblock %}

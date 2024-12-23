@@ -1,0 +1,33 @@
+{% load static %}
+{% load socialaccount %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация</title>
+    <link rel="stylesheet" href="{% static 'scamclothes/css/login.css'%}">
+</head>
+<body>
+    <div class="login-container">
+        <h2>Регистрация</h2>
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form.as_p }}
+            </div>
+            <button type="submit" class="btn login-btn">Зарегистрироваться</button>
+        </form>
+        <p>Вы можете зарегистрироваться через:</p>
+        <div class="google-btn">
+            <a href="{% provider_login_url 'google' %}" class="google-login">
+              <img src="{% static 'scamclothes/images/google.jpg' %}" alt="Google Logo" class="google-icon" style="width: 50px; height: 50px; border: 2px solid black; border-radius: 30%">
+            </a>
+        </div>
+<!--        <div class="extra-options">-->
+<!--                <p>Нет аккаунта? <a href="{% url 'register' %}">Зарегистрируйтесь</a></p>-->
+<!--                <p><a href="{% url 'password_reset' %}">Забыли пароль?</a></p>-->
+<!--        </div>-->
+    </div>
+</body>
+</html>

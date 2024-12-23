@@ -1,0 +1,48 @@
+{% extends 'scamclothes/pages/header.html' %}
+{% block content %}
+<section class="cart-container">
+    <h2>Ваша корзина</h2>
+    {% if cart_items %}
+        <table class="cart-table">
+            <thead>
+                <tr>
+                    <th>Город отправления:</th>
+                    <th>Город прибытия:</th>
+                    <th>Стартовая цена:</th>
+                    <th>Количество:</th>
+                    <th>Действие</th> <!-- Столбец для удаления -->
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                <tr>
+                    <td>{{ item.city1 }}</td>
+                    <td>{{ item.city2 }}</td>
+                    <td>{{ item.start_price }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>
+                        <!-- Форма для удаления элемента -->
+                        <form action="{% url 'remove_from_bucket' item.flight_id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="icon-button">
+                                <i class="fa-solid fa-circle-xmark"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <section class="checkout-container">
+            <form action="{% url 'checkout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="checkout-btn">Перейти к оплате</button>
+            </form>
+        </section>
+
+    {% else %}
+        <p>Ваша корзина пуста</p>
+    {% endif %}
+</section>
+{% endblock %}

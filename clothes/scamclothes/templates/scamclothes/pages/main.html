@@ -1,0 +1,15 @@
+{% extends 'scamclothes/pages/header.html' %}
+{% block content %}
+<section class="hero">
+        <div class="container">
+            <h2>Летайте с комфортом и безопасностью!</h2>
+            <p>Мы предлагаем лучшие условия для вашего путешествия.</p>
+            <form method="get" action="{% url 'search_flights' %}" class="search-form">
+                <input type="text" name="city1" placeholder="Город вылета" value="{{ request.GET.city1|default_if_none:'' }}">
+                <input type="text" name="city2" placeholder="Город прибытия" value="{{ request.GET.city2|default_if_none:'' }}">
+                <button type="submit">Поиск</button>
+            </form>
+        </div>
+    </section>
+{% endblock %}
+
