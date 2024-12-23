@@ -66,7 +66,7 @@ def profile(request):
             user_form.save()
             profile_form.save()
             print('Ваш профиль обновлен')
-            return redirect('profile')  # Перенаправляем на страницу профиля
+            return redirect('profile')
 
     else:
         user_form = UserUpdateForm(instance=request.user)
@@ -94,26 +94,18 @@ def add_to_bucket(request, flight_id):
     if request.method == "POST":
         flight = get_object_or_404(Planes, id=flight_id)
         quantity = int(request.POST.get("quantity", 1))
-
-        # Получаем корзину пользователя
         bucket = get_user_bucket(request.user)
-
-        # Проверяем, есть ли уже этот рейс в корзине
         bucket_item, created = BucketItem.objects.get_or_create(bucket=bucket, plane=flight)
 
         if not created:
-            # Если элемент уже в корзине, обновляем количество
             bucket_item.quantity += quantity
         else:
-            # Если новый элемент, устанавливаем количество
             bucket_item.quantity = quantity
 
         bucket_item.save()
 
-        # Переходим на страницу корзины после добавления
         return view_bucket(request)
 
-    # Если запрос не POST, можно вернуть ошибку или перенаправить
     return render(request, "error.html", {"message": "Invalid request"})
 
 
